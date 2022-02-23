@@ -31,7 +31,7 @@ void copy (char from[], char to[])
 int pasting(char from[], char to[], int pos)
 {
 	int i = 0;
-	while ((to[pos] = from[i]) != '\n')
+	while ((to[pos] = from[i]) != '\n' && (to[pos] = from[i]) != '\0')
 	{
 		++i;
 		++pos;
@@ -39,6 +39,29 @@ int pasting(char from[], char to[], int pos)
 	++pos;
 	to[pos] = '\n';
 	return pos;
+}
+
+/*Функция редактирования массива*/
+void editLine(char input[], int len)
+{
+	int i, sc, index;
+	for(i = 0, sc = 0, index = 0; i < len; ++i)
+	{
+		if (input[i] == ' ' || input[i] == '\t')
+			++sc;
+		else
+		{
+			if(sc > 0 && index != 0)
+			{
+				input[index] = ' ';
+				++index;
+			}
+			input[index] = input[i];
+			++index;
+			sc = 0;
+		}
+	}
+	input[index] = '\0';
 }
 
 int main()
@@ -49,12 +72,12 @@ int main()
 	char resultLine[ARRLEN];//результирующий массив
 	int pos = 0;//Позиция для начала вставки в результирующий массив
 	while ((len = getline(line, ARRLEN)) > 0)
-		if(len > PRINTLEN)
+		if(line[0] != '\n')
 		{
 			copy(line, copyLine);
+			editLine(copyLine,len);
 			pos = pasting(copyLine, resultLine, pos);
 		}
-			
 	resultLine[pos + 1] = '\0';//Добавления нуля в конец результирующего массива в конец
 	printf("%s", resultLine);
     return 0;
