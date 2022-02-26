@@ -64,6 +64,20 @@ void editLine(char input[], int len)
 	input[index] = '\0';
 }
 
+void reverse(char input[])
+{
+	char copyarr[ARRLEN];
+	int i = 0;
+	int len;
+	while((copyarr[i] = input[i]) != '\n')
+		++i;
+	for (int j = 0; i > 0; --i, ++j)
+	{
+		input[j] = copyarr[i-1];
+	}
+}
+
+
 int main()
 {
     int len;
@@ -75,7 +89,7 @@ int main()
 		if(line[0] != '\n')
 		{
 			copy(line, copyLine);
-			editLine(copyLine,len);
+			reverse(copyLine);
 			pos = pasting(copyLine, resultLine, pos);
 		}
 	resultLine[pos + 1] = '\0';//Добавления нуля в конец результирующего массива в конец
