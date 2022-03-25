@@ -6,7 +6,7 @@
 #define ARRLEN 1000 /*Длина массива*/
 
 /*Функция для получения строки*/
-int getline(char s[], int limit)
+int Getline(char s[], int limit)
 {
 	int c,i;
 	for (i = 0; i < (limit - 1) && (c = getchar()) != EOF && c != '\n'; ++i)
@@ -85,7 +85,7 @@ int main()
 	char copyLine[ARRLEN];//массив для копирования
 	char resultLine[ARRLEN];//результирующий массив
 	int pos = 0;//Позиция для начала вставки в результирующий массив
-	while ((len = getline(line, ARRLEN)) > 0)
+	while ((len = Getline(line, ARRLEN)) > 0)
 		if(line[0] != '\n')
 		{
 			copy(line, copyLine);
@@ -93,6 +93,6 @@ int main()
 			pos = pasting(copyLine, resultLine, pos);
 		}
 	resultLine[pos + 1] = '\0';//Добавления нуля в конец результирующего массива в конец
-	printf("%s", resultLine);
+	printf("\n%s", resultLine);
     return 0;
 }
