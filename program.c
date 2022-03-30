@@ -4,9 +4,13 @@
 
 #define PRINTLEN 5 /* максимальный размер вводимой строки */
 #define ARRLEN 1000 /*Длина массива*/
+#define TABSTOP 8 /*Фиксированное количество позиций для таба*/
+
+int myGetLine(char linef[], int MAXLINE); 
+void copy(char to[], char fromf[]); 
 
 /*Функция для получения строки*/
-int Getline(char s[], int limit)
+int myGetLine(char s[], int limit)
 {
 	int c,i;
 	for (i = 0; i < (limit - 1) && (c = getchar()) != EOF && c != '\n'; ++i)
@@ -42,57 +46,55 @@ int pasting(char from[], char to[], int pos)
 }
 
 /*Функция редактирования массива*/
-void editLine(char input[], int len)
+void detab(char input[], int len)
 {
-	int i, sc, index;
-	for(i = 0, sc = 0, index = 0; i < len; ++i)
-	{
-		if (input[i] == ' ' || input[i] == '\t')
-			++sc;
-		else
-		{
-			if(sc > 0 && index != 0)
-			{
-				input[index] = ' ';
-				++index;
-			}
-			input[index] = input[i];
-			++index;
-			sc = 0;
-		}
-	}
-	input[index] = '\0';
+    int i, j, spCount;
+    spCount = 0;
+    j = 0;
+    char bufferArr[ARRLEN];
+    for(i = 0; i < len; ++i)
+    {
+        bufferArr[i] = input[i];
+    }
+    for(i = 0; i < len; i++)
+    {
+        if(bufferArr[i] == '\t'){
+            spCount = TABSTOP - (j % TABSTOP);
+            while(spCount > 0)
+            {
+                input[j] = '*';
+                ++j;
+                --spCount;
+            }
+        }
+        else
+        {
+            input[j] = bufferArr[i];
+            ++j;
+        }
+    }
 }
 
-void reverse(char input[])
-{
-	char copyarr[ARRLEN];
-	int i = 0;
-	int len;
-	while((copyarr[i] = input[i]) != '\n')
-		++i;
-	for (int j = 0; i > 0; --i, ++j)
-	{
-		input[j] = copyarr[i-1];
-	}
-}
+
 
 
 int main()
 {
     int len;
-	char line[ARRLEN]; //исходный массив
-	char copyLine[ARRLEN];//массив для копирования
-	char resultLine[ARRLEN];//результирующий массив
-	int pos = 0;//Позиция для начала вставки в результирующий массив
-	while ((len = Getline(line, ARRLEN)) > 0)
-		if(line[0] != '\n')
-		{
-			copy(line, copyLine);
-			reverse(copyLine);
-			pos = pasting(copyLine, resultLine, pos);
-		}
-	resultLine[pos + 1] = '\0';//Добавления нуля в конец результирующего массива в конец
-	printf("\n%s", resultLine);
+    char line[ARRLEN];
+    char copyLine[ARRLEN];
+    char resultLine[ARRLEN];
+    int pos = 0;
+    while ((len = myGetLine(line,ARRLEN)) > 0)
+    {
+        if(line[0] != '\n')
+        {
+            copy(line, copyLine);
+            detab(copyLine,len);
+            pos = pasting(copyLine, resultLine, pos);
+        }
+    }
+    resultLine[pos+1] = '\0';
+    printf("%s", resultLine);
     return 0;
 }
