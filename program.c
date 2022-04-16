@@ -5,66 +5,33 @@
 #include <ctype.h>
 
 
-int asciiToI(char c)/*Функция преобразования буквы 16-тиричной системы в десятичное число*/
-{
-    int converter = 55;
-    return (int)(toupper(c) - converter);
-}
 
-
-long htol(char arr[], size_t arr_size)
-{
-    int pos, digit, checkout, outNumber;
-    digit = 0;/*Разряды числа*/
-    pos = arr_size - 1; /*Позиция с которой начинаются символа числа*/
-    outNumber = 0; /*Число, которое вернет функция*/
-    /*Проверка является ли число 16-тиричным*/
-    if(arr[0] == '0' && toupper(arr[1]) == 'X')
-        checkout = 1;
-    else
-        checkout = 0;
-    /*Если проверка пройдена переводим число в 10-ное, при переводе необходимо проверить 
-    являются ли элементы массива, символами 16-тиричной системы счисления*/
-    if(checkout){
-        while(2 <= pos){
-            if(isxdigit(arr[pos])){   /*Проверка на символ 16-тиричной системы счисления*/
-                if (isdigit(arr[pos])){
-                    outNumber += (long)pow(16.0,(double)digit) * (long)(arr[pos] - '0');
-                    digit++;
-                    --pos;
-                }
-                /*В этом блоке обрабатываются символьные значения, те что больше 9 - A, B, C ...*/
-                else{
-                    outNumber += (long)pow(16.0,(double)digit) * asciiToI(arr[pos]);
-                    digit++;
-                    --pos;
-                }
-                
-            }
-            /*Если в массиве попадается символ не соотвествующий 16-чной системе, функция выдаст ошибку и ответ -1*/
-            else{
-                printf("Enter incorrect number\n"); 
-                outNumber = -1;
+void squeeze(char s1[], char s2[]){
+    int i,j,k,check;
+    check = 0;
+    for(i = j = 0; s1[i] != '\0'; i++){
+        for(k = 0; s2[k] != '\0'; k++){
+            if (s1[i] == s2[k]){
+                check = 1;
                 break;
             }
+            else
+                check = 0;
         }
-        return outNumber;
+        if(!check)
+        {
+            s1[j++] = s1[i];
+        }
     }
-    else
-    {
-        printf("Enter incorrect number\n");
-        outNumber = - 1;
-        return outNumber;
-    }
-    
+    s1[j] = '\0';
 }
 
 
-int main()
-{
-    char s[] = {'0', 'x', '9', 'a', 'b'};
-    size_t n = sizeof(s) / sizeof(s[0]);
-    printf("%ld\n", htol(s,n));
+int main(){
+    char s1[] = "afrfora";
+    char s2[] = "frodl";
+    squeeze(s1,s2);
+    printf("%s\n",s1);
     return 0;
 }
 
