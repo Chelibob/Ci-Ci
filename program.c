@@ -6,22 +6,20 @@
 
 
 
-int any(char s1[], char s2[]){
-    int i,j;
-    for(j = 0; s2[j] != '\0'; j++){
-        for(i = 0; s1[i] != '\0'; i++){
-            if(s2[j] == s1[i])
-                return i;
-        }
-    }
-    return -1;
+unsigned setbits(unsigned x, int p, int n, int y)
+{
+    return (~((~(~0<<n))<<p)&x)|((~(~0<<n)&y)<<p);
+    
 }
 
 
+unsigned invert(unsigned x, int p,int n){
+    return (~x&(~(~0<<n)<<p)) | (x & ~(~(~0<<n)<<p));
+}
+
 int main(){
-    char s1[] = "Hello, world";
-    char s2[] = "gtu";
-    printf("First entry: %d\n",any(s1,s2));
+    printf("%d\n", setbits(31, 1, 2, 2));
+    printf("%d\n", invert(31,2,2));
     return 0;
 }
 
