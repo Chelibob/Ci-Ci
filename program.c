@@ -13,13 +13,30 @@ unsigned setbits(unsigned x, int p, int n, int y)
 }
 
 
-unsigned invert(unsigned x, int p,int n){
+unsigned invert(unsigned x, int p,char n){
     return (~x&(~(~0<<n)<<p)) | (x & ~(~(~0<<n)<<p));
 }
 
+int binary_search(char s[], size_t arrsize, char item){
+    int low = 0;
+    int high = arrsize;
+    while(low <= high){
+        int mid = (low+high)/2;
+        int guess = s[mid];
+        if(guess == item)
+            return mid;
+        if(guess > item)
+            high = mid - 1;
+        else
+            low = mid + 1;
+    }
+    return -1;
+}
+
 int main(){
-    printf("%d\n", setbits(31, 1, 2, 2));
-    printf("%d\n", invert(31,2,2));
+    char s[] = "13579";
+    size_t arrsize = sizeof(s)/sizeof(s[0]);
+    printf("%d\n", binary_search(s,arrsize,'3'));
     return 0;
 }
 
